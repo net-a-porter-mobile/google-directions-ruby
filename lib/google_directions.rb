@@ -22,10 +22,10 @@ class GoogleDirections
     @origin = origin
     @destination = destination
     
-    if opts[:encode_params] == true
-      @options = opts.merge({:origin => transcribe(@origin), :destination => transcribe(@destination)})
-    else
+    if opts[:encode_params] == false
       @options = opts.merge({:origin => @origin, :destination => @destination})
+    else
+      @options = opts.merge({:origin => transcribe(@origin), :destination => transcribe(@destination)})
     end
     opts.except!(:encode_params)
 
