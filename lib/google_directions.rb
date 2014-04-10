@@ -15,12 +15,19 @@ class GoogleDirections
     :alternative => :true,
     :sensor => :false,
     :mode => :driving,
+    :encode_params => true
   }
 
   def initialize(origin, destination, opts=@@default_options)
     @origin = origin
     @destination = destination
-    @options = opts.merge({:origin => transcribe(@origin), :destination => transcribe(@destination)})
+    
+    if opts[:encode_params] 
+      @options = opts.merge({:origin => transcribe(@origin), :destination => transcribe(@destination)})
+    else
+      @options = opts.merge({:origin => @origin, :destination => @destination})
+    end
+    opts.except!(:encode_params)
 
     @url = @@base_url + '?' + @options.to_query
     @xml = open(@url).read
